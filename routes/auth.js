@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { check, validationResult } = require("express-validator");
 const { users } = require("../db");
+const bcrypt = require("bcrypt");
 
 router.post(
     "/signup",
@@ -10,7 +11,7 @@ router.post(
             min: 7,
         }),
     ],
-    (req, res) => {
+    async (req, res) => {
         const { email, password } = req.body;
 
         // Validates the input:
@@ -36,8 +37,20 @@ router.post(
             });
         }
 
+        // Hash password:
+        let hashPassword = await bcrypt.hash(password, 10);
+
+        users.push({
+            email,
+            password: hashPassword,
+        });
+
         res.send("Validation Passed!");
     },
 );
+
+router.get("/all", (req, res) => {
+    res.json(users);
+});
 
 module.exports = router;
