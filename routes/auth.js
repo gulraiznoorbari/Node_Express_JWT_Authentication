@@ -2,6 +2,7 @@ const router = require("express").Router();
 const { check, validationResult } = require("express-validator");
 const { users } = require("../db");
 const bcrypt = require("bcrypt");
+const JWT = require("jsonwebtoken");
 
 router.post(
     "/signup",
@@ -28,7 +29,7 @@ router.post(
         });
 
         if (user) {
-            res.status(400).json({
+            return res.status(400).json({
                 errors: [
                     {
                         message: "This user already exists!",
@@ -38,14 +39,16 @@ router.post(
         }
 
         // Hash password:
-        let hashPassword = await bcrypt.hash(password, 10);
+        const hashPassword = await bcrypt.hash(password, 10);
 
         users.push({
             email,
             password: hashPassword,
         });
 
-        res.send("Validation Passed!");
+        const token = JWT.sign({ email }, "jdfkbvgjdkbhjfbgdkjsbgi", { expiresIn: "7d" });
+
+        res.json({ token });
     },
 );
 
