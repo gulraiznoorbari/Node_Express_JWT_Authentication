@@ -13,6 +13,38 @@ const users = [
     },
 ];
 
+const publicContent = [
+    {
+        title: "Public Content #1",
+        content: "This is public content",
+    },
+    {
+        title: "Public Content #2",
+        content: "This is public content",
+    },
+    {
+        title: "Public Content #3",
+        content: "This is public content",
+    },
+];
+
+const privateContent = [
+    {
+        title: "Private Content #1",
+        content: "This is private content",
+    },
+    {
+        title: "Private Content #2",
+        content: "This is private content",
+    },
+    {
+        title: "Private Content #3",
+        content: "This is private content",
+    },
+];
+
 module.exports = {
     users,
+    publicContent,
+    privateContent,
 };
