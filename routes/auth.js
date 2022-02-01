@@ -46,7 +46,7 @@ router.post(
             password: hashPassword,
         });
 
-        const token = await JWT.sign({ email }, "jdfkbvgjdkbhjfbgdkjsbgi", { expiresIn: "3d" });
+        const token = await JWT.sign({ email }, process.env.PRIVATE_KEY, { expiresIn: "3d" });
 
         res.json({ token });
     },
@@ -81,7 +81,7 @@ router.post("/login", async (req, res) => {
         });
     }
 
-    const token = await JWT.sign({ email }, "jdfkbvgjdkbhjfbgdkjsbgi", { expiresIn: "3d" });
+    const token = await JWT.sign({ email }, process.env.PRIVATE_KEY, { expiresIn: "3d" });
     res.json({ token });
 });
 

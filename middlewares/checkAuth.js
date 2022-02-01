@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
         });
     }
     try {
-        let user = await jwt.verify(token, "jdfkbvgjdkbhjfbgdkjsbgi");
+        let user = await jwt.verify(token, process.env.PRIVATE_KEY);
         req.user = user.email;
         next();
     } catch (error) {
