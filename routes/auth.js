@@ -46,11 +46,44 @@ router.post(
             password: hashPassword,
         });
 
-        const token = JWT.sign({ email }, "jdfkbvgjdkbhjfbgdkjsbgi", { expiresIn: "7d" });
+        const token = await JWT.sign({ email }, "jdfkbvgjdkbhjfbgdkjsbgi", { expiresIn: "3d" });
 
         res.json({ token });
     },
 );
+
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
+
+    let user = users.find((user) => {
+        return user.email === email;
+    });
+
+    if (!user) {
+        return res.status(400).json({
+            errors: [
+                {
+                    message: "Invalid Credentials!",
+                },
+            ],
+        });
+    }
+
+    let isMatched = await bcrypt.compare(password, user.password);
+
+    if (!isMatched) {
+        return res.status(400).json({
+            errors: [
+                {
+                    message: "Invalid Credentials!",
+                },
+            ],
+        });
+    }
+
+    const token = await JWT.sign({ email }, "jdfkbvgjdkbhjfbgdkjsbgi", { expiresIn: "3d" });
+    res.json({ token });
+});
 
 router.get("/all", (req, res) => {
     res.json(users);
